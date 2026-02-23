@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Naughty Nine 🔞</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0a10;
+      --surface: #180d1a;
+      --border: #2e1a3a;
+      --pink: #e8198a;
+      --pink-dim: rgba(232,25,138,0.25);
+      --pink-faint: rgba(232,25,138,0.07);
+      --white: #f5e4f9;
+      --gray: #7a5580;
+      --gray2: #aa80bb;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(140,20,110,0.32) 0%, transparent 60%),
+        radial-gradient(ellipse at 15% 100%, rgba(80,10,60,0.18) 0%, transparent 50%);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 72px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .back-btn {
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(232,25,138,0.3);
+      color: rgba(232,25,138,0.5);
+      background: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 7px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .back-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-faint); }
+    .nav-badge { font-size: 7px; letter-spacing: 0.2em; color: var(--gray); text-transform: uppercase; }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 30px 0 36px;
+      width: 100%;
+      max-width: 500px;
+      border-bottom: 1px solid rgba(232,25,138,0.12);
+      margin-bottom: 36px;
+    }
+    .logo {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 42px;
+      color: var(--pink);
+      text-shadow: 0 0 36px rgba(232,25,138,0.55), 0 2px 0 rgba(0,0,0,0.4);
+      line-height: 1;
+    }
+    .logo-sub {
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .intro {
+      font-size: 9px;
+      color: var(--gray);
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+      margin-top: 16px;
+      max-width: 340px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 22px 12px 16px;
+      gap: 0;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+      animation: card-in 0.45s ease-out both;
+    }
+    .card:hover {
+      border-color: var(--pink-dim);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 36px rgba(0,0,0,0.5), 0 0 24px rgba(232,25,138,0.08);
+    }
+    @keyframes card-in {
+      0% { opacity: 0; transform: translateY(14px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.30s; }
+    .card:nth-child(7) { animation-delay: 0.35s; }
+    .card:nth-child(8) { animation-delay: 0.40s; }
+    .card:nth-child(9) { animation-delay: 0.45s; }
+
+    .card svg {
+      width: 88px;
+      height: 88px;
+      filter: drop-shadow(0 4px 14px rgba(232,25,138,0.12));
+      transition: transform 0.25s, filter 0.25s;
+    }
+    .card:hover svg {
+      transform: scale(1.08) rotate(-2deg);
+      filter: drop-shadow(0 6px 22px rgba(232,25,138,0.25));
+    }
+
+    .card-num {
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-top: 14px;
+    }
+    .card-name {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 18px;
+      color: var(--white);
+      margin-top: 4px;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .divider {
+      width: 36px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232,25,138,0.4), transparent);
+      margin: 10px auto;
+    }
+
+    .card-desc {
+      font-size: 8px;
+      letter-spacing: 0.04em;
+      color: var(--gray);
+      line-height: 1.7;
+      text-align: center;
+    }
+    .card-desc em {
+      color: var(--pink);
+      font-style: normal;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 52px;
+      text-align: center;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: #2a1a30;
+      text-transform: uppercase;
+      line-height: 2.4;
+    }
+    footer a { color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--pink); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="naughty.html" class="back-btn">← Back to Game</a>
+  <span class="nav-badge">🔞 · 9 Icons</span>
+</nav>
+
+<header>
+  <div class="logo">The Naughty Nine</div>
+  <div class="logo-sub">Dirty Doku · Adult Icon Glossary</div>
+  <p class="intro">Nine cartoon icons standing in for the numbers 1–9. Recognise them all and you're basically a genius. 🏆</p>
+</header>
+
+<div class="grid">
+
+  <!-- 1 · Willy -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="23" y="30" width="18" height="28" rx="9" fill="#FFB3C1"/>
+      <ellipse cx="32" cy="24" rx="13" ry="14" fill="#FF8FA3"/>
+      <ellipse cx="27" cy="18" rx="5" ry="4" fill="#FFCCD5" opacity="0.7"/>
+      <path d="M19 32 Q32 40 45 32" stroke="#FF7090" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="27" cy="21" r="2.5" fill="#2a1a1a"/>
+      <circle cx="37" cy="21" r="2.5" fill="#2a1a1a"/>
+      <circle cx="27.8" cy="20.2" r="0.9" fill="white"/>
+      <circle cx="37.8" cy="20.2" r="0.9" fill="white"/>
+      <path d="M27 27 Q32 31.5 37 27" stroke="#CC4466" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="19" cy="24" rx="4" ry="3" fill="#FF7090" opacity="0.45"/>
+      <ellipse cx="45" cy="24" rx="4" ry="3" fill="#FF7090" opacity="0.45"/>
+    </svg>
+    <div class="card-num"># 1</div>
+    <div class="card-name">Willy</div>
+    <div class="divider"></div>
+    <div class="card-desc">The one that started it all. <em>Pink & proud.</em></div>
+  </div>
+
+  <!-- 2 · Boobies -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="36" r="17" fill="#FFD5B8"/>
+      <circle cx="44" cy="36" r="17" fill="#FFD5B8"/>
+      <path d="M10 52 Q20 58 32 53 Q44 58 54 52" stroke="#FFBF99" stroke-width="2" fill="none"/>
+      <path d="M32 24 Q32 38 32 44" stroke="#FFBF99" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="18" cy="30" r="4" fill="#FFAA80"/>
+      <circle cx="18" cy="30" r="2.2" fill="#FF8A55"/>
+      <circle cx="16.5" cy="28.8" r="0.8" fill="#FFCCA8" opacity="0.8"/>
+      <circle cx="46" cy="30" r="4" fill="#FFAA80"/>
+      <circle cx="46" cy="30" r="2.2" fill="#FF8A55"/>
+      <circle cx="44.5" cy="28.8" r="0.8" fill="#FFCCA8" opacity="0.8"/>
+      <ellipse cx="14" cy="28" rx="5" ry="4" fill="white" opacity="0.22"/>
+      <ellipse cx="40" cy="28" rx="5" ry="4" fill="white" opacity="0.22"/>
+    </svg>
+    <div class="card-num"># 2</div>
+    <div class="card-name">Boobies</div>
+    <div class="divider"></div>
+    <div class="card-desc">A classic pair. <em>Soft & bouncy.</em></div>
+  </div>
+
+  <!-- 3 · Booty -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="34" r="18" fill="#FFD5B8"/>
+      <circle cx="44" cy="34" r="18" fill="#FFD5B8"/>
+      <rect x="0" y="56" width="64" height="10" fill="#180d1a"/>
+      <path d="M32 10 Q30 28 32 46 Q34 54 32 62" stroke="#FFBF99" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="14" cy="26" rx="6" ry="5" fill="white" opacity="0.2"/>
+      <ellipse cx="50" cy="26" rx="6" ry="5" fill="white" opacity="0.2"/>
+      <path d="M26 12 Q32 18 38 12" stroke="#FFBF99" stroke-width="1.5" fill="none"/>
+    </svg>
+    <div class="card-num"># 3</div>
+    <div class="card-name">Booty</div>
+    <div class="divider"></div>
+    <div class="card-desc">Two cheeks, one crack. <em>Jiggle physics included.</em></div>
+  </div>
+
+  <!-- 4 · Lady Bits -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="26" cy="32" rx="12" ry="20" fill="#FF9EB5" opacity="0.6"/>
+      <ellipse cx="38" cy="32" rx="12" ry="20" fill="#FF9EB5" opacity="0.6"/>
+      <ellipse cx="29" cy="32" rx="7" ry="14" fill="#FF7096"/>
+      <ellipse cx="35" cy="32" rx="7" ry="14" fill="#FF7096"/>
+      <ellipse cx="32" cy="32" rx="4" ry="10" fill="#FF4D77"/>
+      <path d="M24 18 Q32 12 40 18 Q36 24 32 22 Q28 24 24 18Z" fill="#FF7096"/>
+      <ellipse cx="29" cy="22" rx="3" ry="4" fill="white" opacity="0.25"/>
+      <text x="48" y="18" font-size="10" fill="#FF9EB5" opacity="0.8">✿</text>
+    </svg>
+    <div class="card-num"># 4</div>
+    <div class="card-name">Lady Bits</div>
+    <div class="divider"></div>
+    <div class="card-desc">Petal-like, pretty, powerful. <em>A flower in bloom.</em></div>
+  </div>
+
+  <!-- 5 · The Boys -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="21" cy="36" rx="17" ry="16" fill="#FFD5B8"/>
+      <ellipse cx="43" cy="36" rx="17" ry="16" fill="#FFBF99"/>
+      <path d="M32 20 Q30 32 32 52 Q34 32 32 20" stroke="#FFBF99" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="17" cy="32" r="2.2" fill="#2a1a1a"/>
+      <circle cx="25" cy="32" r="2.2" fill="#2a1a1a"/>
+      <circle cx="17.7" cy="31.3" r="0.8" fill="white"/>
+      <circle cx="25.7" cy="31.3" r="0.8" fill="white"/>
+      <path d="M17 37 Q21 41 25 37" stroke="#CC7755" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M38 32 Q42 30 46 32" stroke="#2a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M39 38 Q43 42 47 38" stroke="#CC7755" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="15" cy="28" rx="4" ry="3.5" fill="white" opacity="0.2"/>
+      <ellipse cx="40" cy="28" rx="4" ry="3.5" fill="white" opacity="0.2"/>
+    </svg>
+    <div class="card-num"># 5</div>
+    <div class="card-name">The Boys</div>
+    <div class="divider"></div>
+    <div class="card-desc">Always hanging together. <em>One happy, one sleepy.</em></div>
+  </div>
+
+  <!-- 6 · Eggplant -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="32" cy="38" rx="18" ry="22" fill="#8B4FB5"/>
+      <ellipse cx="32" cy="57" rx="5" ry="4" fill="#7A3FA0"/>
+      <ellipse cx="24" cy="28" rx="7" ry="10" fill="#A668CC" opacity="0.5"/>
+      <path d="M32 18 Q20 8 18 16 Q24 12 32 18Z" fill="#4CAF50"/>
+      <path d="M32 18 Q44 8 46 16 Q40 12 32 18Z" fill="#66BB6A"/>
+      <path d="M32 18 Q32 4 36 8 Q34 12 32 18Z" fill="#4CAF50"/>
+      <line x1="32" y1="18" x2="32" y2="10" stroke="#388E3C" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M26 36 Q29 34 32 36" stroke="#5C2A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="36" cy="36" r="2.5" fill="#5C2A8A"/>
+      <circle cx="36.7" cy="35.3" r="0.8" fill="white"/>
+      <path d="M26 43 Q32 48 38 43" stroke="#5C2A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="22" cy="40" rx="4" ry="3" fill="#CC88DD" opacity="0.4"/>
+      <ellipse cx="42" cy="40" rx="4" ry="3" fill="#CC88DD" opacity="0.4"/>
+    </svg>
+    <div class="card-num"># 6</div>
+    <div class="card-name">Eggplant</div>
+    <div class="divider"></div>
+    <div class="card-desc">Technically a vegetable. <em>Famous for other reasons.</em></div>
+  </div>
+
+  <!-- 7 · Peachy -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="36" r="22" fill="#FFAA6E"/>
+      <ellipse cx="42" cy="30" rx="14" ry="16" fill="#FF8A5B" opacity="0.4"/>
+      <path d="M32 14 Q29 24 32 36 Q35 46 32 58" stroke="#FF7044" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="22" cy="24" rx="7" ry="6" fill="white" opacity="0.22"/>
+      <path d="M28 14 Q20 4 14 10 Q22 8 28 14Z" fill="#66BB6A"/>
+      <path d="M36 12 Q38 2 44 6 Q38 6 36 12Z" fill="#4CAF50"/>
+      <path d="M32 14 Q33 8 30 4" stroke="#5D4037" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="26" cy="36" r="2" fill="#FF7044" opacity="0.5"/>
+      <circle cx="38" cy="36" r="2" fill="#FF7044" opacity="0.5"/>
+      <path d="M27 42 Q32 46 37 42" stroke="#E64A19" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="card-num"># 7</div>
+    <div class="card-name">Peachy</div>
+    <div class="divider"></div>
+    <div class="card-desc">Sweet, round, and just right. <em>Everything's peachy.</em></div>
+  </div>
+
+  <!-- 8 · Banana -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 50 Q10 28 20 16 Q30 6 48 12 Q52 14 50 18 Q36 14 28 22 Q18 32 20 52 Z" fill="#FFE135"/>
+      <path d="M20 50 Q16 32 24 22 Q32 14 48 18" stroke="#FFF176" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="48" cy="15" rx="5" ry="4" fill="#795548" transform="rotate(-20 48 15)"/>
+      <ellipse cx="17" cy="51" rx="5" ry="4" fill="#795548" transform="rotate(70 17 51)"/>
+      <path d="M14 50 Q10 28 20 16 Q30 6 48 12" stroke="#F9A825" stroke-width="2" fill="none"/>
+      <circle cx="36" cy="28" r="2.2" fill="#5D4037"/>
+      <circle cx="28" cy="34" r="2.2" fill="#5D4037"/>
+      <circle cx="36.7" cy="27.3" r="0.7" fill="white"/>
+      <circle cx="28.7" cy="33.3" r="0.7" fill="white"/>
+      <path d="M28 40 Q32 44 36 40" stroke="#F57F17" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="card-num"># 8</div>
+    <div class="card-name">Banana</div>
+    <div class="divider"></div>
+    <div class="card-desc">Long, yellow, curved. <em>A fruit. Obviously.</em></div>
+  </div>
+
+  <!-- 9 · Cherry -->
+  <div class="card">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 42 Q22 26 32 20 Q42 26 44 42" stroke="#5D4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M32 20 Q32 12 34 8" stroke="#5D4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M34 8 Q42 4 44 12 Q38 10 34 8Z" fill="#4CAF50"/>
+      <circle cx="18" cy="46" r="14" fill="#C0392B"/>
+      <ellipse cx="14" cy="40" rx="5" ry="4" fill="#E74C3C" opacity="0.6"/>
+      <circle cx="13" cy="39" r="3" fill="white" opacity="0.25"/>
+      <circle cx="46" cy="46" r="14" fill="#922B21"/>
+      <ellipse cx="42" cy="40" rx="5" ry="4" fill="#C0392B" opacity="0.6"/>
+      <circle cx="41" cy="39" r="3" fill="white" opacity="0.25"/>
+      <path d="M14 44 Q17 42 20 44" stroke="#7B241C" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="14" cy="48" r="1.5" fill="#7B241C"/>
+      <circle cx="21" cy="48" r="1.5" fill="#7B241C"/>
+      <path d="M14 51 Q17.5 54 21 51" stroke="#7B241C" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="42" cy="44" r="1.8" fill="#641E16"/>
+      <circle cx="49" cy="44" r="1.8" fill="#641E16"/>
+      <ellipse cx="45.5" cy="50" rx="3" ry="2.5" fill="#641E16"/>
+    </svg>
+    <div class="card-num"># 9</div>
+    <div class="card-name">Cherry</div>
+    <div class="divider"></div>
+    <div class="card-desc">Always come in pairs. <em>One happy, one shocked.</em></div>
+  </div>
+
+</div>
+
+<footer>
+  <div>Dirty Doku · 18+ Adult Sudoku</div>
+  <div><a href="naughty.html">← Back to the game</a></div>
+</footer>
+
+</body>
+</html>
