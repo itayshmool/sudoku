@@ -268,7 +268,7 @@
 <header>
   <div class="logo">Hardwood Legends</div>
   <div class="logo-sub">NBA Sudoku · 9 Icons · Classic Game</div>
-  <a href="nba-legends.html" class="who-btn">🏀<br>Who's<br>Who?</a>
+  <a href="nba-legends.html" class="who-btn" id="who-btn">🏀<br>Who's<br>Who?</a>
   <div class="difficulty">
     <button class="diff-btn" data-diff="easy">Easy</button>
     <button class="diff-btn active" data-diff="medium">Medium</button>
@@ -588,11 +588,60 @@ function spawnConfetti() {
 }
 
 // ─────────────────────────────────────────────
+// STATE PERSISTENCE
+// ─────────────────────────────────────────────
+const SAVE_KEY = 'nba-sudoku-state';
+
+function saveState() {
+  if (S.complete) return;
+  localStorage.setItem(SAVE_KEY, JSON.stringify({
+    board: S.board.map(c => ({ val: c.val, given: c.given, notes: [...c.notes], error: c.error })),
+    solution: S.solution,
+    difficulty: S.difficulty,
+    errors: S.errors,
+    hints: S.hints,
+    activeIcon: S.activeIcon,
+    notesMode: S.notesMode,
+    elapsed: Math.floor((Date.now() - S.startTime) / 1000)
+  }));
+}
+
+function loadState() {
+  const raw = localStorage.getItem(SAVE_KEY);
+  if (!raw) return false;
+  try {
+    const d = JSON.parse(raw);
+    S.board = d.board.map(c => ({ val: c.val, given: c.given, notes: new Set(c.notes), error: c.error }));
+    S.solution = d.solution;
+    S.difficulty = d.difficulty;
+    S.errors = d.errors;
+    S.hints = d.hints;
+    S.activeIcon = d.activeIcon;
+    S.notesMode = d.notesMode;
+    S.selected = -1;
+    S.complete = false;
+    document.getElementById('err-count').textContent = S.errors;
+    if (S.errors > 0) document.getElementById('err-dot').classList.add('on');
+    document.getElementById('hint-count').textContent = S.hints;
+    document.getElementById('notes-btn').classList.toggle('active', S.notesMode);
+    document.querySelectorAll('.diff-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.diff === S.difficulty)
+    );
+    buildGrid();
+    buildPicker();
+    startTimer(d.elapsed);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+// ─────────────────────────────────────────────
 // TIMER
 // ─────────────────────────────────────────────
-function startTimer() {
+function startTimer(elapsedSec = 0) {
   clearInterval(S.timerInterval);
-  S.startTime = Date.now();
+  S.startTime = Date.now() - elapsedSec * 1000;
   S.timerInterval = setInterval(() => {
     const sec = Math.floor((Date.now() - S.startTime) / 1000);
     const m = Math.floor(sec / 60), s = sec % 60;
@@ -604,6 +653,7 @@ function startTimer() {
 // NEW GAME
 // ─────────────────────────────────────────────
 function newGame() {
+  localStorage.removeItem(SAVE_KEY);
   clearInterval(S.timerInterval);
   const { puz, sol } = generate(S.difficulty);
   S.board = puz.map(v => ({ val: v, given: v !== 0, notes: new Set(), error: false }));
@@ -655,7 +705,8 @@ document.addEventListener('keydown', e => {
 // ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
-newGame();
+document.getElementById('who-btn').addEventListener('click', saveState);
+if (!loadState()) newGame();
 </script>
 </body>
 </html>

@@ -464,7 +464,7 @@
   <div class="title">Dirty Doku</div>
   <div class="tagline">18+ · Cartoon Adult Sudoku</div>
   <div class="title-line"></div>
-  <a href="naughty-icons.html" class="icons-btn">🔞<br>The<br>Nine</a>
+  <a href="naughty-icons.html" class="icons-btn" id="icons-link">🔞<br>The<br>Nine</a>
 </header>
 
 <div class="stats">
@@ -733,7 +733,59 @@ const rowOf = i => (i/9)|0;
 const colOf = i => i%9;
 const boxOf = i => ((rowOf(i)/3)|0)*3 + ((colOf(i)/3)|0);
 
+// ═══════════════════════════════════════════
+//  STATE PERSISTENCE
+// ═══════════════════════════════════════════
+const SAVE_KEY = 'dirty-doku-state';
+
+function saveState() {
+  if (G.done) return;
+  localStorage.setItem(SAVE_KEY, JSON.stringify({
+    cells: G.cells,
+    solution: G.solution,
+    notes: G.notes.map(s => [...s]),
+    sel: -1,
+    notesMode: G.notesMode,
+    timer: G.timer,
+    mistakes: G.mistakes,
+    hints: G.hints,
+    diff: G.diff
+  }));
+}
+
+function loadState() {
+  const raw = localStorage.getItem(SAVE_KEY);
+  if (!raw) return false;
+  try {
+    const d = JSON.parse(raw);
+    clearInterval(G.timerRef);
+    G.cells    = d.cells;
+    G.solution = d.solution;
+    G.notes    = d.notes.map(a => new Set(a));
+    G.sel      = -1;
+    G.notesMode = d.notesMode;
+    G.timer    = d.timer;
+    G.mistakes = d.mistakes;
+    G.hints    = d.hints;
+    G.done     = false;
+    G.diff     = d.diff;
+    G.timerRef = setInterval(() => { G.timer++; renderTimer(); }, 1000);
+    document.querySelectorAll('.diff-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.d === G.diff)
+    );
+    const nb = document.getElementById('btnNotes');
+    nb.classList.toggle('on', G.notesMode);
+    nb.textContent = G.notesMode ? '✎ Notes ON' : '✎ Notes';
+    renderAll();
+    document.getElementById('victoryScreen').classList.remove('show');
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
 function startGame(diff) {
+  localStorage.removeItem(SAVE_KEY);
   clearInterval(G.timerRef);
   const {puzzle, sol} = makePuzzle(diff);
   G.cells    = puzzle.flat().map(v => ({val:v, given:v!==0, error:false}));
@@ -1032,7 +1084,8 @@ document.addEventListener('keydown', e => {
   }
 });
 
-startGame('easy');
+document.getElementById('icons-link').addEventListener('click', saveState);
+if (!loadState()) startGame('easy');
 </script>
 </body>
 </html>
