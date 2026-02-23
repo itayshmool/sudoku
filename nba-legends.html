@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardwood Legends · Who's Who</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080a0d;
+      --card-bg: #0e0c09;
+      --card-border: #1e1a10;
+      --gold: #F0B020;
+      --gold-dim: #7a5c10;
+      --gold-bright: #ffd040;
+      --cream: #F0E0B0;
+      --cream-dim: #806820;
+      --radius: 14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      background-image:
+        repeating-linear-gradient(91deg, transparent, transparent 58px, rgba(255,200,80,0.016) 58px, rgba(255,200,80,0.016) 59px),
+        repeating-linear-gradient(89deg, transparent, transparent 44px, rgba(0,0,0,0.12) 44px, rgba(0,0,0,0.12) 45px),
+        radial-gradient(ellipse at 50% 0%, rgba(200,144,26,0.10) 0%, transparent 55%);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 72px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .back-btn {
+      display: flex; align-items: center; gap: 7px;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold-dim);
+      background: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 7px 13px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .back-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(240,176,32,0.07); }
+    .nav-badge {
+      font-size: 7px;
+      letter-spacing: 0.2em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 32px 0 40px;
+      width: 100%;
+      max-width: 800px;
+      border-bottom: 1px solid rgba(200,144,26,0.12);
+      margin-bottom: 40px;
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 44px;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      line-height: 1;
+      text-shadow: 0 0 50px rgba(240,176,32,0.3);
+    }
+    .logo-sub {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .intro {
+      font-size: 10px;
+      color: var(--cream-dim);
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+      margin-top: 18px;
+      max-width: 420px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ── GRID ── */
+    .legends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    /* ── PLAYER CARD ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+      animation: card-in 0.5s ease-out both;
+    }
+    .card:hover {
+      border-color: var(--gold-dim);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(240,176,32,0.06);
+    }
+    @keyframes card-in {
+      0% { opacity: 0; transform: translateY(16px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* stagger */
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.30s; }
+    .card:nth-child(7) { animation-delay: 0.35s; }
+    .card:nth-child(8) { animation-delay: 0.40s; }
+    .card:nth-child(9) { animation-delay: 0.45s; }
+
+    .card-portrait {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 24px 16px;
+    }
+    .card-portrait svg {
+      width: 120px;
+      height: 120px;
+      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.5));
+      transition: transform 0.25s;
+    }
+    .card:hover .card-portrait svg { transform: scale(1.06) rotate(-1deg); }
+
+    .card-body { padding: 0 18px 20px; }
+
+    .card-num {
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .card-team {
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold-dim), transparent);
+      margin-bottom: 14px;
+      opacity: 0.35;
+    }
+
+    .fact-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .fact-list li {
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      color: var(--cream-dim);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+    .fact-list li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--gold-dim);
+      font-size: 7px;
+      top: 1px;
+    }
+    .fact-list li strong { color: var(--cream); }
+
+    .sig-badge {
+      display: inline-block;
+      margin-top: 12px;
+      border: 1px solid rgba(240,176,32,0.25);
+      color: var(--gold);
+      font-size: 7px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(240,176,32,0.06);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 56px;
+      text-align: center;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: #2a2010;
+      text-transform: uppercase;
+      line-height: 2.2;
+    }
+    footer a {
+      color: var(--gold-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="nba.html" class="back-btn">← Back to Game</a>
+  <span class="nav-badge">9 Icons · Hardwood Legends</span>
+</nav>
+
+<header>
+  <div class="logo">Who's Who</div>
+  <div class="logo-sub">The 9 Legends of Hardwood Sudoku</div>
+  <p class="intro">Nine icons of basketball history — from the greatest of all time to the next generation of superstars. Tap any card to see their story.</p>
+</header>
+
+<div class="legends-grid">
+
+  <!-- 1 · MICHAEL JORDAN -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#CE1141"/><circle cx="32" cy="32" r="31" fill="url(#mjg2)" opacity="0.3"/><path d="M6 50 Q32 62 58 50 L62 66 L2 66Z" fill="white"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#CE1141" text-anchor="middle">23</text><path d="M26 44 Q32 48 38 44 L37 51 L27 51Z" fill="#7A4A32"/><ellipse cx="32" cy="28" rx="14" ry="15.5" fill="#8B5A3C"/><ellipse cx="26" cy="19" rx="5" ry="3.5" fill="#AA7055" opacity="0.4"/><ellipse cx="18" cy="29" rx="3" ry="4.5" fill="#7A4A32"/><ellipse cx="46" cy="29" rx="3" ry="4.5" fill="#7A4A32"/><ellipse cx="27" cy="27" rx="3.5" ry="3" fill="white"/><ellipse cx="37" cy="27" rx="3.5" ry="3" fill="white"/><circle cx="27.5" cy="27.5" r="2.2" fill="#100800"/><circle cx="37.5" cy="27.5" r="2.2" fill="#100800"/><circle cx="28.2" cy="26.8" r="0.75" fill="white"/><circle cx="38.2" cy="26.8" r="0.75" fill="white"/><path d="M23 23 Q27 21 31 23" stroke="#1a0800" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M33 23 Q37 21 41 23" stroke="#1a0800" stroke-width="2.2" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="32" rx="2.5" ry="1.5" fill="#5a2e18" opacity="0.5"/><path d="M25 37 Q32 44 39 37" fill="#7a2020"/><path d="M25 37 Q32 39.5 39 37" fill="#CC5555"/><ellipse cx="32" cy="41" rx="5.5" ry="4.5" fill="#FF6688"/><path d="M28.5 41 Q32 45.5 35.5 41" fill="#EE4466"/><defs><radialGradient id="mjg2" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="white" stop-opacity="0.15"/><stop offset="100%" stop-color="black" stop-opacity="0.1"/></radialGradient></defs></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #1 · Jersey #23</div>
+      <div class="card-name">Michael Jordan</div>
+      <div class="card-team">Chicago Bulls</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>6× NBA Champion</strong> — two three-peats with the Bulls (1991–93, 1996–98)</li>
+        <li><strong>6× Finals MVP</strong> — never lost a Finals series in his career</li>
+        <li><strong>5× League MVP</strong> & <strong>10× scoring champion</strong></li>
+        <li>Retired with a <strong>30.1 ppg average</strong> — highest in NBA history</li>
+        <li>The original <strong>Air Jordan</strong> — changed sneaker culture forever</li>
+      </ul>
+      <span class="sig-badge">Signature: Tongue-out dunk</span>
+    </div>
+  </div>
+
+  <!-- 2 · MAGIC JOHNSON -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#552583"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FDB927" stroke-width="3"/><path d="M5 50 Q32 63 59 50 L63 66 L1 66Z" fill="#FDB927"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#552583" text-anchor="middle">32</text><path d="M26 44 Q32 49 38 44 L37 51 L27 51Z" fill="#5A3020"/><ellipse cx="32" cy="27" rx="15.5" ry="16" fill="#5A3020"/><ellipse cx="32" cy="14" rx="14" ry="6" fill="#2a1008"/><rect x="18" y="12" width="28" height="7" fill="#2a1008" rx="2"/><ellipse cx="16.5" cy="28" rx="3.5" ry="5" fill="#4A2818"/><ellipse cx="47.5" cy="28" rx="3.5" ry="5" fill="#4A2818"/><ellipse cx="26" cy="27" rx="3.5" ry="3" fill="white"/><ellipse cx="38" cy="27" rx="3.5" ry="3" fill="white"/><circle cx="26.5" cy="27.5" r="2.2" fill="#120800"/><circle cx="38.5" cy="27.5" r="2.2" fill="#120800"/><circle cx="27.2" cy="26.8" r="0.7" fill="white"/><circle cx="39.2" cy="26.8" r="0.7" fill="white"/><path d="M22 23 Q26 20.5 30 22" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M34 22 Q38 20.5 42 23" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="32" rx="3" ry="2" fill="#3a1808" opacity="0.5"/><path d="M21 37 Q32 48 43 37" fill="#441010"/><path d="M22 37 Q32 44 42 37 Q42 40 32 42 Q22 40 22 37Z" fill="white"/><path d="M21 37 Q32 40 43 37" stroke="#CC3333" stroke-width="1.5" fill="none"/><ellipse cx="19" cy="34" rx="5" ry="4" fill="#7A4030" opacity="0.25"/><ellipse cx="45" cy="34" rx="5" ry="4" fill="#7A4030" opacity="0.25"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #2 · Jersey #32</div>
+      <div class="card-name">Magic Johnson</div>
+      <div class="card-team">Los Angeles Lakers</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>5× NBA Champion</strong> with the "Showtime" Lakers</li>
+        <li><strong>3× Finals MVP</strong> & <strong>3× League MVP</strong></li>
+        <li>Led the <strong>1992 Dream Team</strong> at the Barcelona Olympics</li>
+        <li>Revolutionized the point guard position at <strong>6'9"</strong></li>
+        <li>Famous for his <strong>no-look pass</strong> — pure basketball magic</li>
+      </ul>
+      <span class="sig-badge">Signature: The no-look pass</span>
+    </div>
+  </div>
+
+  <!-- 3 · LARRY BIRD -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#007A33"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FFFFFF" stroke-width="2.5"/><path d="M5 50 Q32 62 59 50 L63 66 L1 66Z" fill="white"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#007A33" text-anchor="middle">33</text><path d="M27 44 Q32 48 37 44 L36 51 L28 51Z" fill="#D4A882"/><ellipse cx="32" cy="28" rx="14" ry="15" fill="#E8C8A0"/><path d="M18 26 Q18 12 32 11 Q46 12 46 26" fill="#C8A830"/><path d="M18 26 Q14 34 16 44 Q20 40 22 35 Q24 38 26 44 Q28 36 28 44" fill="#C8A830"/><path d="M46 26 Q50 34 48 44 Q44 40 42 35 Q40 38 38 44 Q36 36 36 44" fill="#C8A830"/><ellipse cx="32" cy="16" rx="8" ry="4" fill="#E0C040" opacity="0.5"/><ellipse cx="18" cy="29" rx="3" ry="4.5" fill="#C8A882"/><ellipse cx="46" cy="29" rx="3" ry="4.5" fill="#C8A882"/><ellipse cx="27" cy="28" rx="3.5" ry="3" fill="white"/><ellipse cx="37" cy="28" rx="3.5" ry="3" fill="white"/><circle cx="27.5" cy="28.5" r="2" fill="#3060A0"/><circle cx="37.5" cy="28.5" r="2" fill="#3060A0"/><circle cx="28.2" cy="27.8" r="0.7" fill="white"/><circle cx="38.2" cy="27.8" r="0.7" fill="white"/><path d="M23 24 Q27 22 31 24" stroke="#B09020" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M33 24 Q37 22 41 24" stroke="#B09020" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M30 30 Q32 35 34 30" stroke="#B09070" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M27 37 Q32 41 37 38" stroke="#A07050" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M28 35 Q32 37 36 35" stroke="#B09020" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #3 · Jersey #33</div>
+      <div class="card-name">Larry Bird</div>
+      <div class="card-team">Boston Celtics</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>3× NBA Champion</strong> with the Celtics (1981, 1984, 1986)</li>
+        <li><strong>3× League MVP</strong> (1984–86) — dominant stretch</li>
+        <li>Legendary <strong>trash-talker</strong> who always backed it up</li>
+        <li>Two-time <strong>All-Star Game MVP</strong> including the first 3-point contest</li>
+        <li>One of basketball's greatest <strong>pure shooters</strong> ever</li>
+      </ul>
+      <span class="sig-badge">Signature: Cold-blooded jumper</span>
+    </div>
+  </div>
+
+  <!-- 4 · LEBRON JAMES -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#860038"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FDBB30" stroke-width="2.5"/><path d="M3 50 Q32 63 61 50 L65 66 L-1 66Z" fill="#860038"/><path d="M3 50 Q32 60 61 50 L61 55 L3 55Z" fill="#FDBB30"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#FDBB30" text-anchor="middle">23</text><path d="M24 43 Q32 49 40 43 L40 51 L24 51Z" fill="#7A4A30"/><ellipse cx="16" cy="50" rx="12" ry="6" fill="#860038"/><ellipse cx="48" cy="50" rx="12" ry="6" fill="#860038"/><ellipse cx="32" cy="27" rx="14" ry="15" fill="#8B5A38"/><path d="M18 20 Q32 15 46 20 Q46 24 32 25 Q18 24 18 20Z" fill="white"/><path d="M18 20 Q32 14 46 20" stroke="#FDBB30" stroke-width="1" fill="none"/><path d="M19 21 Q32 15 45 21 Q44 14 32 12 Q20 14 19 21Z" fill="#1a0800"/><ellipse cx="18" cy="29" rx="3" ry="4.5" fill="#7A4A30"/><ellipse cx="46" cy="29" rx="3" ry="4.5" fill="#7A4A30"/><ellipse cx="27" cy="28" rx="3.5" ry="3" fill="white"/><ellipse cx="37" cy="28" rx="3.5" ry="3" fill="white"/><circle cx="27.5" cy="28.5" r="2.2" fill="#0a0400"/><circle cx="37.5" cy="28.5" r="2.2" fill="#0a0400"/><circle cx="28.2" cy="27.8" r="0.8" fill="white"/><circle cx="38.2" cy="27.8" r="0.8" fill="white"/><path d="M23 24 Q27 22 31 24" stroke="#1a0800" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M33 24 Q37 22 41 24" stroke="#1a0800" stroke-width="2.2" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="33" rx="2.5" ry="1.5" fill="#5a3018" opacity="0.5"/><path d="M27 38 Q32 41 37 38" stroke="#5a2808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #4 · Jersey #23</div>
+      <div class="card-name">LeBron James</div>
+      <div class="card-team">Cleveland Cavaliers</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>4× NBA Champion</strong> with 3 different franchises</li>
+        <li><strong>4× Finals MVP</strong> & <strong>4× League MVP</strong></li>
+        <li>The <strong>NBA's all-time scoring leader</strong> — surpassed Kareem in 2023</li>
+        <li>Won titles with <strong>Miami, Cleveland & LA</strong> — true winner everywhere</li>
+        <li>First player to score <strong>40,000 career points</strong></li>
+      </ul>
+      <span class="sig-badge">Signature: The headband</span>
+    </div>
+  </div>
+
+  <!-- 5 · KOBE BRYANT -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#552583"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FDB927" stroke-width="3"/><path d="M5 50 Q32 63 59 50 L63 66 L1 66Z" fill="#FDB927"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#552583" text-anchor="middle">24</text><path d="M26 44 Q32 48 38 44 L37 51 L27 51Z" fill="#7A4838"/><ellipse cx="32" cy="27" rx="13.5" ry="15" fill="#8B5540"/><path d="M19 23 Q32 11 45 23 Q44 14 32 12 Q20 14 19 23Z" fill="#1a0808"/><ellipse cx="18.5" cy="29" rx="3" ry="4.5" fill="#7A4838"/><ellipse cx="45.5" cy="29" rx="3" ry="4.5" fill="#7A4838"/><ellipse cx="27" cy="27.5" rx="3.5" ry="2.8" fill="white"/><ellipse cx="37" cy="27.5" rx="3.5" ry="2.8" fill="white"/><circle cx="27.5" cy="28" r="2.2" fill="#0a0400"/><circle cx="37.5" cy="28" r="2.2" fill="#0a0400"/><circle cx="28.2" cy="27.3" r="0.75" fill="white"/><circle cx="38.2" cy="27.3" r="0.75" fill="white"/><path d="M23.5 25 Q27 23.5 30.5 25" stroke="#1a0808" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M33.5 25 Q37 23.5 40.5 25" stroke="#1a0808" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M23.5 29.5 Q27 31 30.5 29.5" stroke="#7A4838" stroke-width="1.2" fill="none"/><path d="M33.5 29.5 Q37 31 40.5 29.5" stroke="#7A4838" stroke-width="1.2" fill="none"/><path d="M30 32 Q32 36 34 32" stroke="#5a2810" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M27 38 Q30 40 35 38 Q35 40 32 41 Q29 40 27 38Z" fill="#441818"/><path d="M27 38 Q31 40.5 35 38" stroke="#cc5555" stroke-width="0.8" fill="none"/><path d="M19 34 Q18 42 32 46 Q46 42 45 34" stroke="#6A3828" stroke-width="1.2" fill="none" opacity="0.4"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #5 · Jersey #24</div>
+      <div class="card-name">Kobe Bryant</div>
+      <div class="card-team">Los Angeles Lakers</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>5× NBA Champion</strong> with the Lakers</li>
+        <li>Scored <strong>81 points</strong> in a single game — 2nd all-time ever</li>
+        <li><strong>2× Finals MVP</strong> & <strong>1× League MVP</strong> (2008)</li>
+        <li><strong>18× All-Star</strong> — won <strong>4 All-Star Game MVP</strong> awards</li>
+        <li>The "Black Mamba" mentality — unmatched <strong>competitive drive</strong></li>
+      </ul>
+      <span class="sig-badge">Signature: The fadeaway</span>
+    </div>
+  </div>
+
+  <!-- 6 · SHAQUILLE O'NEAL -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#552583"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FDB927" stroke-width="3"/><path d="M0 48 Q32 65 64 48 L64 66 L0 66Z" fill="#FDB927"/><text x="32" y="64" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#552583" text-anchor="middle">34</text><path d="M21 43 Q32 50 43 43 L43 51 L21 51Z" fill="#3A1808"/><ellipse cx="32" cy="52" rx="28" ry="8" fill="#441866"/><ellipse cx="32" cy="26" rx="16.5" ry="16" fill="#3A2010"/><ellipse cx="32" cy="15" rx="14" ry="5" fill="#1a0800"/><rect x="18" y="13" width="28" height="5" fill="#1a0800" rx="2"/><ellipse cx="15.5" cy="27" rx="4" ry="5.5" fill="#2A1408"/><ellipse cx="48.5" cy="27" rx="4" ry="5.5" fill="#2A1408"/><ellipse cx="25.5" cy="26" rx="4" ry="3.5" fill="white"/><ellipse cx="38.5" cy="26" rx="4" ry="3.5" fill="white"/><circle cx="26" cy="26.5" r="2.5" fill="#080400"/><circle cx="39" cy="26.5" r="2.5" fill="#080400"/><circle cx="26.8" cy="25.8" r="0.9" fill="white"/><circle cx="39.8" cy="25.8" r="0.9" fill="white"/><path d="M21 22 Q25.5 19.5 30 21" stroke="#0a0400" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M35 21 Q39.5 19.5 44 22" stroke="#0a0400" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M19 35 Q32 50 45 35" fill="#330808"/><path d="M20 35 Q32 46 44 35 Q44 41 32 44 Q20 41 20 35Z" fill="white"/><line x1="26" y1="35" x2="25" y2="42" stroke="#ddd" stroke-width="0.8"/><line x1="32" y1="35" x2="32" y2="44" stroke="#ddd" stroke-width="0.8"/><line x1="38" y1="35" x2="39" y2="42" stroke="#ddd" stroke-width="0.8"/><path d="M19 35 Q32 40 45 35" stroke="#CC4444" stroke-width="1.5" fill="none"/><ellipse cx="17" cy="33" rx="6" ry="5" fill="#4A2818" opacity="0.3"/><ellipse cx="47" cy="33" rx="6" ry="5" fill="#4A2818" opacity="0.3"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #6 · Jersey #34</div>
+      <div class="card-name">Shaquille O'Neal</div>
+      <div class="card-team">Los Angeles Lakers</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>4× NBA Champion</strong> — three-peat with Lakers (2000–02)</li>
+        <li><strong>3× Finals MVP</strong> & <strong>1× League MVP</strong> (2000)</li>
+        <li>At <strong>7'1" and 325 lbs</strong> — one of the most physically dominant players ever</li>
+        <li><strong>15× All-Star</strong>, <strong>2× scoring champion</strong></li>
+        <li>Nobody could stop the <strong>Shaq Attack</strong> — just had to foul him</li>
+      </ul>
+      <span class="sig-badge">Signature: The Shaq Dunk™</span>
+    </div>
+  </div>
+
+  <!-- 7 · KAREEM ABDUL-JABBAR -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#552583"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FDB927" stroke-width="3"/><path d="M5 51 Q32 63 59 51 L63 66 L1 66Z" fill="#FDB927"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#552583" text-anchor="middle">33</text><path d="M27 44 Q32 50 37 44 L36 52 L28 52Z" fill="#2A1408"/><ellipse cx="32" cy="26" rx="13" ry="17" fill="#2A1408"/><ellipse cx="32" cy="12" rx="11" ry="4" fill="#180800"/><ellipse cx="19" cy="27" rx="3" ry="4.5" fill="#221008"/><ellipse cx="45" cy="27" rx="3" ry="4.5" fill="#221008"/><ellipse cx="27" cy="27" rx="3.5" ry="3" fill="white"/><ellipse cx="37" cy="27" rx="3.5" ry="3" fill="white"/><circle cx="27.5" cy="27.5" r="2" fill="#080400"/><circle cx="37.5" cy="27.5" r="2" fill="#080400"/><circle cx="28.2" cy="26.8" r="0.7" fill="white"/><circle cx="38.2" cy="26.8" r="0.7" fill="white"/><path d="M23.5 23 Q27 21 30.5 23" stroke="#0a0400" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M33.5 23 Q37 21 40.5 23" stroke="#0a0400" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M30 30 Q32 37 34 30" stroke="#1a0800" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M28 40 Q32 42.5 36 40" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M26 25 Q32 23 38 25" stroke="#8B6030" stroke-width="2.2" fill="none"/><rect x="20" y="23" width="13" height="9" rx="4" fill="none" stroke="#A07840" stroke-width="2.2"/><rect x="21" y="24" width="11" height="7" rx="3.5" fill="#4A6A30" opacity="0.35"/><rect x="31" y="23" width="13" height="9" rx="4" fill="none" stroke="#A07840" stroke-width="2.2"/><rect x="32" y="24" width="11" height="7" rx="3.5" fill="#4A6A30" opacity="0.35"/><line x1="20" y1="27" x2="16" y2="27" stroke="#A07840" stroke-width="2"/><line x1="44" y1="27" x2="48" y2="27" stroke="#A07840" stroke-width="2"/><path d="M30 28 Q32 30 34 28" stroke="#2A1408" stroke-width="1" fill="none"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #7 · Jersey #33</div>
+      <div class="card-name">Kareem Abdul-Jabbar</div>
+      <div class="card-team">Los Angeles Lakers</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>6× NBA Champion</strong> — won at Milwaukee & LA</li>
+        <li>Record <strong>6× League MVP</strong> — more than anyone in history</li>
+        <li><strong>19× All-Star</strong> over a staggering <strong>20-year career</strong></li>
+        <li>Held the <strong>all-time scoring record for 38 years</strong> (until LeBron, 2023)</li>
+        <li>Inventor of the <strong>skyhook</strong> — the most unstoppable shot in basketball</li>
+      </ul>
+      <span class="sig-badge">Signature: The skyhook</span>
+    </div>
+  </div>
+
+  <!-- 8 · STEPHEN CURRY -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#1D428A"/><circle cx="32" cy="32" r="31" fill="none" stroke="#FFC72C" stroke-width="3"/><path d="M5 51 Q32 63 59 51 L63 66 L1 66Z" fill="#FFC72C"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="#1D428A" text-anchor="middle">30</text><path d="M26 44 Q32 49 38 44 L37 51 L27 51Z" fill="#9B7050"/><ellipse cx="32" cy="27" rx="14" ry="15" fill="#AA7848"/><path d="M18 22 Q32 10 46 22 Q44 12 32 10 Q20 12 18 22Z" fill="#2a1808"/><path d="M22 20 Q27 14 32 16 Q28 13 24 16Z" fill="#3a2010"/><ellipse cx="18" cy="28" rx="3" ry="4.5" fill="#9B7048"/><ellipse cx="46" cy="28" rx="3" ry="4.5" fill="#9B7048"/><ellipse cx="27" cy="27.5" rx="3.5" ry="3.2" fill="white"/><ellipse cx="37" cy="27.5" rx="3.5" ry="3.2" fill="white"/><circle cx="27.5" cy="28" r="2.2" fill="#100800"/><circle cx="37.5" cy="28" r="2.2" fill="#100800"/><circle cx="28.3" cy="27.2" r="0.85" fill="white"/><circle cx="38.3" cy="27.2" r="0.85" fill="white"/><path d="M23.5 23.5 Q27 22 30.5 23.5" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M33.5 23.5 Q37 22 40.5 23.5" stroke="#1a0800" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M30 32 Q32 35.5 34 32" stroke="#7a4828" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M25 37 Q32 45 39 37" fill="#662020"/><path d="M26 37 Q32 43 38 37 Q38 41 32 43 Q26 41 26 37Z" fill="white"/><path d="M25 37 Q32 41 39 37" stroke="#CC4444" stroke-width="1.2" fill="none"/><path d="M26 37 Q32 35 38 37 Q38 34 32 33 Q26 34 26 37Z" fill="#FFC72C" opacity="0.85"/><path d="M27 35 Q32 33.5 37 35" stroke="#E0A820" stroke-width="0.8" fill="none"/><path d="M46 18 Q48 10 50 8" stroke="#AA7848" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="50" cy="7" r="3" fill="#AA7848"/><ellipse cx="50" cy="6.5" rx="1.5" ry="1" fill="#CC9A60" opacity="0.6"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #8 · Jersey #30</div>
+      <div class="card-name">Stephen Curry</div>
+      <div class="card-team">Golden State Warriors</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li><strong>4× NBA Champion</strong> with the Golden State Warriors</li>
+        <li><strong>2× MVP</strong> including the first-ever <strong>unanimous MVP</strong> (2016)</li>
+        <li>Holds the record for most <strong>3-pointers in a season</strong> (402) and career</li>
+        <li><strong>Revolutionized basketball</strong> — made the logo 3 a regular shot</li>
+        <li>The <strong>mouth guard</strong> is always hanging — his signature nervous habit</li>
+      </ul>
+      <span class="sig-badge">Signature: Deep-range three</span>
+    </div>
+  </div>
+
+  <!-- 9 · DENI AVDIJA -->
+  <div class="card">
+    <div class="card-portrait">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="#E03A3E"/><circle cx="32" cy="32" r="31" fill="none" stroke="#000000" stroke-width="3"/><path d="M5 51 Q32 63 59 51 L63 66 L1 66Z" fill="#000000"/><text x="32" y="63" font-family="Arial Black,sans-serif" font-size="9" font-weight="900" fill="white" text-anchor="middle">8</text><path d="M26 44 Q32 49 38 44 L37 51 L27 51Z" fill="#C09060"/><ellipse cx="32" cy="30" rx="13" ry="14" fill="#D4A870"/><ellipse cx="19" cy="30" rx="3" ry="4.5" fill="#C09060"/><ellipse cx="45" cy="30" rx="3" ry="4.5" fill="#C09060"/><ellipse cx="32" cy="14" rx="20" ry="16" fill="#1a0e08"/><circle cx="20" cy="8" r="7" fill="#221208"/><circle cx="32" cy="5" r="8" fill="#1a0e08"/><circle cx="44" cy="8" r="7" fill="#221208"/><circle cx="14" cy="14" r="6" fill="#1e1008"/><circle cx="50" cy="14" r="6" fill="#1e1008"/><circle cx="16" cy="20" r="5.5" fill="#221208"/><circle cx="48" cy="20" r="5.5" fill="#221208"/><circle cx="26" cy="4" r="5" fill="#2a1808"/><circle cx="38" cy="4" r="5" fill="#2a1808"/><ellipse cx="26" cy="9" rx="6" ry="4" fill="#3a2010" opacity="0.4"/><ellipse cx="19" cy="24" rx="5" ry="7" fill="#1e1008"/><ellipse cx="45" cy="24" rx="5" ry="7" fill="#1e1008"/><ellipse cx="27" cy="30" rx="3.5" ry="3.2" fill="white"/><ellipse cx="37" cy="30" rx="3.5" ry="3.2" fill="white"/><circle cx="27.5" cy="30.5" r="2.2" fill="#0a0600"/><circle cx="37.5" cy="30.5" r="2.2" fill="#0a0600"/><circle cx="28.3" cy="29.7" r="0.8" fill="white"/><circle cx="38.3" cy="29.7" r="0.8" fill="white"/><path d="M23.5 26.5 Q27 25 30.5 26.5" stroke="#1a0e08" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M33.5 26.5 Q37 25 40.5 26.5" stroke="#1a0e08" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M30 34 Q32 37 34 34" stroke="#9a6838" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M27 39 Q32 43.5 37 39" stroke="#8a5030" stroke-width="2" fill="none" stroke-linecap="round"/><text x="50" y="14" font-size="8" fill="white" opacity="0.28" text-anchor="middle">✡</text></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">Icon #9 · Jersey #8</div>
+      <div class="card-name">Deni Avdija</div>
+      <div class="card-team">Portland Trail Blazers</div>
+      <div class="divider"></div>
+      <ul class="fact-list">
+        <li>Israeli basketball star — <strong>#9 pick in the 2020 NBA Draft</strong></li>
+        <li>Played for <strong>Maccabi Tel Aviv</strong> before entering the NBA</li>
+        <li>Traded to the <strong>Portland Trail Blazers</strong> in 2024, thriving as a starter</li>
+        <li>Stars for the <strong>Israeli national team</strong> — a source of national pride</li>
+        <li>Unmistakable for his massive <strong>curly afro</strong> — the most recognizable hair in the NBA</li>
+      </ul>
+      <span class="sig-badge">Signature: The afro</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>Hardwood Legends · NBA Sudoku</div>
+  <div><a href="nba.html">← Back to Game</a></div>
+</footer>
+
+</body>
+</html>
