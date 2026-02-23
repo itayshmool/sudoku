@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dirty Doku 🔞</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0a10;
+      --surface: #180d1a;
+      --surface2: #22132a;
+      --border-thin: #2e1a3a;
+      --border-box: #6b2570;
+      --pink: #e8198a;
+      --pink-light: #ff5eb2;
+      --pink-dim: rgba(232,25,138,0.13);
+      --gold: #d4a847;
+      --white: #f5e4f9;
+      --gray: #7a5580;
+      --gray2: #aa80bb;
+      --error: #cc3333;
+      --error-bg: rgba(204,51,51,0.12);
+      --selected-bg: rgba(232,25,138,0.17);
+      --highlight-bg: rgba(232,25,138,0.05);
+      --same-bg: rgba(232,25,138,0.10);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(140,20,110,0.28) 0%, transparent 65%);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* ─── Age Gate ─── */
+    .age-gate {
+      position: fixed;
+      inset: 0;
+      background: #080408;
+      background-image:
+        radial-gradient(ellipse at 50% 45%, rgba(160,18,120,0.38) 0%, transparent 68%),
+        radial-gradient(ellipse at 20% 80%, rgba(80,10,60,0.2) 0%, transparent 50%);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      transition: opacity 0.5s ease;
+    }
+    .age-gate.hide { opacity: 0; pointer-events: none; }
+
+    .gate-badge {
+      font-size: 72px;
+      line-height: 1;
+      margin-bottom: 18px;
+      animation: badge-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%,100% { transform: scale(1) rotate(-4deg); }
+      50%      { transform: scale(1.1) rotate(4deg); }
+    }
+    .gate-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 42px;
+      color: var(--pink);
+      text-shadow: 0 0 28px rgba(232,25,138,0.6);
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .gate-sub {
+      font-size: 9px;
+      letter-spacing: 0.26em;
+      color: var(--gray2);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .gate-warning {
+      font-size: 12px;
+      color: var(--gray);
+      line-height: 1.8;
+      text-align: center;
+      max-width: 290px;
+      margin-bottom: 36px;
+    }
+    .gate-warning strong { color: var(--gray2); }
+    .gate-btn {
+      padding: 16px 52px;
+      background: linear-gradient(135deg, #e8198a, #c0146e);
+      border: none;
+      border-radius: 40px;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 22px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 36px rgba(232,25,138,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+    .gate-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(232,25,138,0.65); }
+    .gate-btn:active { transform: scale(0.97); }
+    .gate-exit {
+      font-size: 10px;
+      color: var(--gray);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .gate-strip {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 28px;
+      opacity: 0.6;
+    }
+    .gate-strip span { font-size: 22px; animation: wiggle 2s ease-in-out infinite; }
+    .gate-strip span:nth-child(2) { animation-delay: 0.3s; }
+    .gate-strip span:nth-child(3) { animation-delay: 0.6s; }
+    .gate-strip span:nth-child(4) { animation-delay: 0.9s; }
+    .gate-strip span:nth-child(5) { animation-delay: 1.2s; }
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-6deg) scale(1); }
+      50%      { transform: rotate(6deg) scale(1.12); }
+    }
+
+    /* ─── Header ─── */
+    header {
+      width: 100%;
+      padding: 22px 0 4px;
+      text-align: center;
+      position: relative;
+    }
+    .title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 40px;
+      color: var(--pink);
+      text-shadow: 0 0 28px rgba(232,25,138,0.5), 0 2px 0 rgba(0,0,0,0.4);
+      letter-spacing: 0.03em;
+      line-height: 1;
+    }
+    .tagline {
+      font-size: 8.5px;
+      letter-spacing: 0.28em;
+      color: var(--gray);
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+    .title-line {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--pink), transparent);
+      margin: 10px auto 0;
+      opacity: 0.65;
+    }
+
+    /* ─── Stats ─── */
+    .stats {
+      display: flex;
+      gap: 36px;
+      padding: 14px 0 9px;
+    }
+    .stat { text-align: center; }
+    .stat-label {
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      color: var(--gray);
+      text-transform: uppercase;
+      display: block;
+    }
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      display: block;
+      margin-top: 3px;
+    }
+    #stat-mistakes { color: var(--error); }
+
+    /* ─── Difficulty ─── */
+    .diff-wrap {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--border-thin);
+      border-radius: 28px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .diff-btn {
+      padding: 7px 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: transparent;
+      border: none;
+      color: var(--gray2);
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 28px;
+    }
+    .diff-btn.active { background: var(--pink); color: white; font-weight: 700; box-shadow: 0 0 14px rgba(232,25,138,0.4); }
+    .diff-btn:not(.active):hover { color: var(--white); }
+
+    /* ─── Grid ─── */
+    .grid-wrap { width: min(92vw, 376px); }
+    #grid {
+      width: 100%;
+      aspect-ratio: 1;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      border: 2px solid var(--border-box);
+      background: var(--surface);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(232,25,138,0.08),
+        0 0 40px rgba(232,25,138,0.10),
+        inset 0 0 40px rgba(0,0,0,0.5);
+    }
+    .cell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.11s;
+      touch-action: manipulation;
+      overflow: hidden;
+    }
+    .cell svg        { width: 84%; height: 84%; display: block; pointer-events: none; }
+    .cell.given svg  { filter: drop-shadow(0 1px 4px rgba(212,168,71,0.55)); }
+    .cell.entered svg{ opacity: 0.88; }
+    .cell.error      { background: var(--error-bg) !important; }
+    .cell.error svg  { filter: drop-shadow(0 0 6px rgba(204,51,51,0.9)) saturate(0.5); }
+    .cell.selected   { background: var(--selected-bg); }
+    .cell.highlight  { background: var(--highlight-bg); }
+    .cell.same-icon  { background: var(--same-bg); }
+    /* Gold dot on givens */
+    .cell.given::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; right: 2px;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.65;
+    }
+
+    /* Notes */
+    .notes-grid {
+      position: absolute;
+      inset: 1px;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      grid-template-rows: repeat(3,1fr);
+    }
+    .note-dig {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(4px, 1.1vw, 7px);
+      font-weight: 700;
+      color: rgba(232,25,138,0.65);
+    }
+
+    /* ─── Icon Picker ─── */
+    .icon-picker {
+      width: min(92vw, 376px);
+      display: grid;
+      grid-template-columns: repeat(9,1fr);
+      gap: 4px;
+      padding: 12px 0 4px;
+    }
+    .icon-btn {
+      aspect-ratio: 0.84;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border-thin);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.13s;
+      padding: 3px;
+      overflow: hidden;
+    }
+    .icon-btn svg { width: 100%; height: 100%; display: block; }
+    .icon-btn:active { transform: scale(0.86); border-color: var(--pink); background: var(--pink-dim); }
+    .icon-btn:hover  { border-color: var(--pink); box-shadow: 0 0 10px rgba(232,25,138,0.35); }
+    .icon-btn.complete { opacity: 0.16; pointer-events: none; }
+
+    /* ─── Controls ─── */
+    .controls {
+      width: min(92vw, 376px);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 6px;
+      padding: 6px 0 20px;
+    }
+    .ctrl-btn {
+      padding: 9px 4px;
+      background: var(--surface);
+      border: 1px solid var(--border-thin);
+      border-radius: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray2);
+      cursor: pointer;
+      transition: all 0.13s;
+      white-space: nowrap;
+    }
+    .ctrl-btn:hover  { border-color: var(--pink); color: var(--pink); }
+    .ctrl-btn:active { transform: scale(0.95); }
+    .ctrl-btn.on     { border-color: var(--pink); color: var(--pink); background: var(--pink-dim); }
+
+    /* ─── Victory ─── */
+    .victory-screen {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,4,10,0.97);
+      background-image: radial-gradient(ellipse at 50% 40%, rgba(140,18,100,0.38) 0%, transparent 68%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      overflow: hidden;
+    }
+    .victory-screen.show { opacity: 1; pointer-events: all; }
+
+    .v-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 62px;
+      color: var(--pink);
+      text-shadow: 0 0 36px rgba(232,25,138,0.7), 0 2px 0 rgba(0,0,0,0.4);
+      animation: v-bounce 0.85s ease-in-out infinite alternate;
+    }
+    @keyframes v-bounce {
+      from { transform: translateY(0) rotate(-1.5deg); }
+      to   { transform: translateY(-12px) rotate(1.5deg); }
+    }
+    .v-sub {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      color: var(--gray2);
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+    .v-icon-row {
+      display: flex;
+      gap: 8px;
+      margin: 20px 0 14px;
+    }
+    .v-spin {
+      width: 40px; height: 40px;
+      animation: spin360 2s linear infinite;
+    }
+    .v-spin:nth-child(2) { animation-direction: reverse; animation-duration: 1.4s; }
+    .v-spin:nth-child(3) { animation-duration: 2.6s; }
+    @keyframes spin360 { to { transform: rotate(360deg); } }
+
+    .v-stats { display: flex; gap: 50px; margin: 4px 0 28px; }
+    .v-stat { text-align: center; }
+    .v-stat-label {
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+    .v-stat-value {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 40px;
+      color: var(--pink);
+      margin-top: 4px;
+    }
+    .v-btn {
+      padding: 15px 50px;
+      background: linear-gradient(135deg, #e8198a, #b0126a);
+      border: none;
+      border-radius: 36px;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 22px;
+      color: white;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 32px rgba(232,25,138,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .v-btn:hover  { transform: scale(1.05); box-shadow: 0 8px 44px rgba(232,25,138,0.7); }
+    .v-btn:active { transform: scale(0.96); }
+
+    /* Floating icons */
+    .floaters { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    @keyframes float-up {
+      0%   { transform: translateY(110vh) rotate(0deg) scale(0.6); opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(580deg) scale(1.1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Age Gate ─── -->
+<div class="age-gate" id="ageGate">
+  <div class="gate-badge">🔞</div>
+  <div class="gate-title">Adults Only</div>
+  <div class="gate-sub">Dirty Doku · Cartoon 18+ Puzzle</div>
+  <div class="gate-strip">
+    <span>🍆</span><span>🍑</span><span>🍒</span><span>🍌</span><span>🍆</span>
+  </div>
+  <div class="gate-warning">
+    This game contains <strong>silly cartoon adult humour</strong><br>
+    and suggestive body-part icons.<br><br>
+    You must be <strong>18 years or older</strong> to play.
+  </div>
+  <button class="gate-btn" id="gateEnter">I'm 18+ — Let me in! 😈</button>
+  <div class="gate-exit" onclick="window.history.back()">Get me out of here</div>
+</div>
+
+<!-- ─── Game ─── -->
+<header>
+  <div class="title">Dirty Doku</div>
+  <div class="tagline">18+ · Cartoon Adult Sudoku</div>
+  <div class="title-line"></div>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <span class="stat-label">Time</span>
+    <span class="stat-value" id="stat-timer">00:00</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Errors</span>
+    <span class="stat-value" id="stat-mistakes">0</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Hints</span>
+    <span class="stat-value" id="stat-hints">3</span>
+  </div>
+</div>
+
+<div class="diff-wrap">
+  <button class="diff-btn active" data-d="easy">Easy</button>
+  <button class="diff-btn" data-d="medium">Medium</button>
+  <button class="diff-btn" data-d="hard">Hard</button>
+</div>
+
+<div class="grid-wrap">
+  <div id="grid"></div>
+</div>
+
+<div class="icon-picker" id="iconPicker"></div>
+
+<div class="controls">
+  <button class="ctrl-btn" id="btnErase">✕ Erase</button>
+  <button class="ctrl-btn" id="btnNotes">✎ Notes</button>
+  <button class="ctrl-btn" id="btnHint">◈ Hint</button>
+  <button class="ctrl-btn" id="btnNew">↺ New</button>
+</div>
+
+<!-- ─── Victory ─── -->
+<div class="victory-screen" id="victoryScreen">
+  <div class="floaters" id="floaters"></div>
+  <div class="v-title">Oh Yeah! 🏆</div>
+  <div class="v-sub">You filthy genius</div>
+  <div class="v-icon-row" id="vIconRow"></div>
+  <div class="v-stats">
+    <div class="v-stat">
+      <div class="v-stat-label">Time</div>
+      <div class="v-stat-value" id="v-time">—</div>
+    </div>
+    <div class="v-stat">
+      <div class="v-stat-label">Errors</div>
+      <div class="v-stat-value" id="v-errors">—</div>
+    </div>
+  </div>
+  <button class="v-btn" id="btnPlayAgain">Play Again 😏</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  THE NAUGHTY NINE — SVG ICON SET
+// ═══════════════════════════════════════════
+
+const ICONS = {
+  names: ['Willy','Boobies','Booty','Lady Bits','The Boys','Eggplant','Peach','Banana','Cherry'],
+  notes: ['W','B','A','V','T','E','P','N','C'],
+  svgs: [
+
+    // 1 ─ Willy
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="23" y="30" width="18" height="28" rx="9" fill="#FFB3C1"/>
+      <ellipse cx="32" cy="24" rx="13" ry="14" fill="#FF8FA3"/>
+      <ellipse cx="27" cy="18" rx="5" ry="4" fill="#FFCCD5" opacity="0.7"/>
+      <path d="M19 32 Q32 40 45 32" stroke="#FF7090" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="27" cy="21" r="2.5" fill="#2a1a1a"/>
+      <circle cx="37" cy="21" r="2.5" fill="#2a1a1a"/>
+      <circle cx="27.8" cy="20.2" r="0.9" fill="white"/>
+      <circle cx="37.8" cy="20.2" r="0.9" fill="white"/>
+      <path d="M27 27 Q32 31.5 37 27" stroke="#CC4466" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="19" cy="24" rx="4" ry="3" fill="#FF7090" opacity="0.45"/>
+      <ellipse cx="45" cy="24" rx="4" ry="3" fill="#FF7090" opacity="0.45"/>
+    </svg>`,
+
+    // 2 ─ Boobies
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="36" r="17" fill="#FFD5B8"/>
+      <circle cx="44" cy="36" r="17" fill="#FFD5B8"/>
+      <path d="M32 24 Q32 38 32 44" stroke="#FFBF99" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="18" cy="30" r="4" fill="#FFAA80"/>
+      <circle cx="18" cy="30" r="2.2" fill="#FF8A55"/>
+      <circle cx="16.5" cy="28.8" r="0.8" fill="#FFCCA8" opacity="0.8"/>
+      <circle cx="46" cy="30" r="4" fill="#FFAA80"/>
+      <circle cx="46" cy="30" r="2.2" fill="#FF8A55"/>
+      <circle cx="44.5" cy="28.8" r="0.8" fill="#FFCCA8" opacity="0.8"/>
+      <ellipse cx="14" cy="28" rx="5" ry="4" fill="white" opacity="0.22"/>
+      <ellipse cx="40" cy="28" rx="5" ry="4" fill="white" opacity="0.22"/>
+    </svg>`,
+
+    // 3 ─ Booty (no bg-colour hack — circles repositioned higher)
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="28" r="18" fill="#FFD5B8"/>
+      <circle cx="44" cy="28" r="18" fill="#FFD5B8"/>
+      <path d="M32 6 Q30 18 32 36" stroke="#FFBF99" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M5 42 Q20 56 32 50 Q44 56 59 42" stroke="#FFBF99" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="13" cy="20" rx="6" ry="5" fill="white" opacity="0.2"/>
+      <ellipse cx="49" cy="20" rx="6" ry="5" fill="white" opacity="0.2"/>
+    </svg>`,
+
+    // 4 ─ Lady Bits
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="26" cy="32" rx="12" ry="20" fill="#FF9EB5" opacity="0.6"/>
+      <ellipse cx="38" cy="32" rx="12" ry="20" fill="#FF9EB5" opacity="0.6"/>
+      <ellipse cx="29" cy="32" rx="7" ry="14" fill="#FF7096"/>
+      <ellipse cx="35" cy="32" rx="7" ry="14" fill="#FF7096"/>
+      <ellipse cx="32" cy="32" rx="4" ry="10" fill="#FF4D77"/>
+      <path d="M24 18 Q32 12 40 18 Q36 24 32 22 Q28 24 24 18Z" fill="#FF7096"/>
+      <ellipse cx="29" cy="22" rx="3" ry="4" fill="white" opacity="0.25"/>
+    </svg>`,
+
+    // 5 ─ The Boys
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="21" cy="36" rx="17" ry="16" fill="#FFD5B8"/>
+      <ellipse cx="43" cy="36" rx="17" ry="16" fill="#FFBF99"/>
+      <path d="M32 20 Q30 32 32 52 Q34 32 32 20" stroke="#FFBF99" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="17" cy="32" r="2.2" fill="#2a1a1a"/>
+      <circle cx="25" cy="32" r="2.2" fill="#2a1a1a"/>
+      <circle cx="17.7" cy="31.3" r="0.8" fill="white"/>
+      <circle cx="25.7" cy="31.3" r="0.8" fill="white"/>
+      <path d="M17 37 Q21 41 25 37" stroke="#CC7755" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M38 32 Q42 30 46 32" stroke="#2a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M39 38 Q43 42 47 38" stroke="#CC7755" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="15" cy="28" rx="4" ry="3.5" fill="white" opacity="0.2"/>
+      <ellipse cx="40" cy="28" rx="4" ry="3.5" fill="white" opacity="0.2"/>
+    </svg>`,
+
+    // 6 ─ Eggplant
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="32" cy="38" rx="18" ry="22" fill="#8B4FB5"/>
+      <ellipse cx="32" cy="57" rx="5" ry="4" fill="#7A3FA0"/>
+      <ellipse cx="24" cy="28" rx="7" ry="10" fill="#A668CC" opacity="0.5"/>
+      <path d="M32 18 Q20 8 18 16 Q24 12 32 18Z" fill="#4CAF50"/>
+      <path d="M32 18 Q44 8 46 16 Q40 12 32 18Z" fill="#66BB6A"/>
+      <path d="M32 18 Q32 4 36 8 Q34 12 32 18Z" fill="#4CAF50"/>
+      <line x1="32" y1="18" x2="32" y2="10" stroke="#388E3C" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M26 36 Q29 34 32 36" stroke="#5C2A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="36" cy="36" r="2.5" fill="#5C2A8A"/>
+      <circle cx="36.7" cy="35.3" r="0.8" fill="white"/>
+      <path d="M26 43 Q32 48 38 43" stroke="#5C2A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="22" cy="40" rx="4" ry="3" fill="#CC88DD" opacity="0.4"/>
+      <ellipse cx="42" cy="40" rx="4" ry="3" fill="#CC88DD" opacity="0.4"/>
+    </svg>`,
+
+    // 7 ─ Peach
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="36" r="22" fill="#FFAA6E"/>
+      <ellipse cx="42" cy="30" rx="14" ry="16" fill="#FF8A5B" opacity="0.4"/>
+      <path d="M32 14 Q29 24 32 36 Q35 46 32 58" stroke="#FF7044" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="22" cy="24" rx="7" ry="6" fill="white" opacity="0.22"/>
+      <path d="M28 14 Q20 4 14 10 Q22 8 28 14Z" fill="#66BB6A"/>
+      <path d="M36 12 Q38 2 44 6 Q38 6 36 12Z" fill="#4CAF50"/>
+      <path d="M32 14 Q33 8 30 4" stroke="#5D4037" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M27 42 Q32 46 37 42" stroke="#E64A19" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>`,
+
+    // 8 ─ Banana
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 50 Q10 28 20 16 Q30 6 48 12 Q52 14 50 18 Q36 14 28 22 Q18 32 20 52 Z" fill="#FFE135"/>
+      <path d="M20 50 Q16 32 24 22 Q32 14 48 18" stroke="#FFF176" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="48" cy="15" rx="5" ry="4" fill="#795548" transform="rotate(-20 48 15)"/>
+      <ellipse cx="17" cy="51" rx="5" ry="4" fill="#795548" transform="rotate(70 17 51)"/>
+      <path d="M14 50 Q10 28 20 16 Q30 6 48 12" stroke="#F9A825" stroke-width="2" fill="none"/>
+      <circle cx="36" cy="28" r="2.2" fill="#5D4037"/>
+      <circle cx="28" cy="34" r="2.2" fill="#5D4037"/>
+      <circle cx="36.7" cy="27.3" r="0.7" fill="white"/>
+      <circle cx="28.7" cy="33.3" r="0.7" fill="white"/>
+      <path d="M28 40 Q32 44 36 40" stroke="#F57F17" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>`,
+
+    // 9 ─ Cherry
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 42 Q22 26 32 20 Q42 26 44 42" stroke="#5D4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M32 20 Q32 12 34 8" stroke="#5D4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M34 8 Q42 4 44 12 Q38 10 34 8Z" fill="#4CAF50"/>
+      <circle cx="18" cy="46" r="14" fill="#C0392B"/>
+      <ellipse cx="14" cy="40" rx="5" ry="4" fill="#E74C3C" opacity="0.6"/>
+      <circle cx="13" cy="39" r="3" fill="white" opacity="0.25"/>
+      <circle cx="46" cy="46" r="14" fill="#922B21"/>
+      <ellipse cx="42" cy="40" rx="5" ry="4" fill="#C0392B" opacity="0.6"/>
+      <circle cx="41" cy="39" r="3" fill="white" opacity="0.25"/>
+      <path d="M14 44 Q17 42 20 44" stroke="#7B241C" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="14" cy="48" r="1.5" fill="#7B241C"/>
+      <circle cx="21" cy="48" r="1.5" fill="#7B241C"/>
+      <path d="M14 51 Q17.5 54 21 51" stroke="#7B241C" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="42" cy="44" r="1.8" fill="#641E16"/>
+      <circle cx="49" cy="44" r="1.8" fill="#641E16"/>
+      <ellipse cx="45.5" cy="50" rx="3" ry="2.5" fill="#641E16"/>
+    </svg>`
+  ]
+};
+
+// ═══════════════════════════════════════════
+//  SUDOKU ENGINE
+// ═══════════════════════════════════════════
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = (Math.random() * (i + 1)) | 0;
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function isSafe(g, r, c, n) {
+  for (let i = 0; i < 9; i++) {
+    if (g[r][i] === n || g[i][c] === n) return false;
+  }
+  const br = (r/3|0)*3, bc = (c/3|0)*3;
+  for (let i = br; i < br+3; i++)
+    for (let j = bc; j < bc+3; j++)
+      if (g[i][j] === n) return false;
+  return true;
+}
+
+function fillGrid(g) {
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (g[r][c] === 0) {
+        for (const n of shuffle([1,2,3,4,5,6,7,8,9])) {
+          if (isSafe(g, r, c, n)) {
+            g[r][c] = n;
+            if (fillGrid(g)) return true;
+            g[r][c] = 0;
+          }
+        }
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function makePuzzle(diff) {
+  const sol = Array.from({length:9}, () => Array(9).fill(0));
+  fillGrid(sol);
+  const puzzle = sol.map(r => [...r]);
+  const clues = {easy:45, medium:32, hard:26}[diff];
+  let kept = 81;
+  for (const p of shuffle(Array.from({length:81}, (_,i) => i))) {
+    if (kept <= clues) break;
+    puzzle[p/9|0][p%9] = 0;
+    kept--;
+  }
+  return {puzzle, sol};
+}
+
+// ═══════════════════════════════════════════
+//  GAME STATE
+// ═══════════════════════════════════════════
+
+const G = {
+  cells:[], solution:[], notes:[],
+  sel:-1, notesMode:false,
+  timer:0, timerRef:null,
+  mistakes:0, hints:3, done:false, diff:'easy'
+};
+
+const rowOf = i => (i/9)|0;
+const colOf = i => i%9;
+const boxOf = i => ((rowOf(i)/3)|0)*3 + ((colOf(i)/3)|0);
+
+function startGame(diff) {
+  clearInterval(G.timerRef);
+  const {puzzle, sol} = makePuzzle(diff);
+  G.cells    = puzzle.flat().map(v => ({val:v, given:v!==0, error:false}));
+  G.solution = sol.flat();
+  G.notes    = Array.from({length:81}, () => new Set());
+  G.sel = -1; G.notesMode = false;
+  G.timer = 0; G.mistakes = 0; G.hints = 3; G.done = false; G.diff = diff;
+
+  G.timerRef = setInterval(() => { G.timer++; renderTimer(); }, 1000);
+
+  document.querySelectorAll('.diff-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.d === diff)
+  );
+  const nb = document.getElementById('btnNotes');
+  nb.classList.remove('on');
+  nb.textContent = '✎ Notes';
+
+  renderAll();
+  document.getElementById('victoryScreen').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════
+//  RENDERING
+// ═══════════════════════════════════════════
+
+let cellEls = [];
+
+function buildGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  cellEls = [];
+  for (let i = 0; i < 81; i++) {
+    const el = document.createElement('div');
+    el.className = 'cell';
+    el.addEventListener('click', () => select(i));
+    const r = rowOf(i), c = colOf(i);
+    el.style.borderRight  = c===8 ? 'none' : (c===2||c===5) ? '2px solid var(--border-box)' : '1px solid var(--border-thin)';
+    el.style.borderBottom = r===8 ? 'none' : (r===2||r===5) ? '2px solid var(--border-box)' : '1px solid var(--border-thin)';
+    grid.appendChild(el);
+    cellEls.push(el);
+  }
+}
+
+function renderAll() {
+  renderTimer(); renderStats(); renderGrid(); renderPicker();
+}
+
+function renderGrid() {
+  const selR   = G.sel >= 0 ? rowOf(G.sel) : -1;
+  const selC   = G.sel >= 0 ? colOf(G.sel) : -1;
+  const selBox = G.sel >= 0 ? boxOf(G.sel) : -1;
+  const selVal = G.sel >= 0 ? G.cells[G.sel].val : 0;
+
+  for (let i = 0; i < 81; i++) {
+    const el   = cellEls[i];
+    const cell = G.cells[i];
+    const r = rowOf(i), c = colOf(i);
+
+    let cls = 'cell';
+    if (i === G.sel) {
+      cls += ' selected';
+    } else if (G.sel >= 0) {
+      const inGroup = r===selR || c===selC || boxOf(i)===selBox;
+      if (selVal > 0 && cell.val === selVal) cls += ' same-icon';
+      else if (inGroup) cls += ' highlight';
+    }
+    if (cell.given)        cls += ' given';
+    else if (cell.val > 0) cls += cell.error ? ' error' : ' entered';
+    el.className = cls;
+
+    el.innerHTML = '';
+    if (cell.val > 0) {
+      el.innerHTML = ICONS.svgs[cell.val - 1];
+    } else {
+      const ns = G.notes[i];
+      if (ns && ns.size > 0) {
+        const ng = document.createElement('div');
+        ng.className = 'notes-grid';
+        for (let n = 1; n <= 9; n++) {
+          const nd = document.createElement('div');
+          nd.className = 'note-dig';
+          nd.textContent = ns.has(n) ? ICONS.notes[n-1] : '';
+          ng.appendChild(nd);
+        }
+        el.appendChild(ng);
+      }
+    }
+  }
+}
+
+function renderTimer() {
+  const m = (G.timer/60|0).toString().padStart(2,'0');
+  const s = (G.timer%60).toString().padStart(2,'0');
+  document.getElementById('stat-timer').textContent = `${m}:${s}`;
+}
+
+function renderStats() {
+  document.getElementById('stat-mistakes').textContent = G.mistakes;
+  document.getElementById('stat-hints').textContent    = G.hints;
+}
+
+function renderPicker() {
+  const counts = Array(10).fill(0);
+  for (let i = 0; i < 81; i++) {
+    const v = G.cells[i].val;
+    if (v > 0 && G.solution[i] === v) counts[v]++;
+  }
+  document.querySelectorAll('.icon-btn').forEach(btn =>
+    btn.classList.toggle('complete', counts[+btn.dataset.n] >= 9)
+  );
+}
+
+// ═══════════════════════════════════════════
+//  INTERACTIONS
+// ═══════════════════════════════════════════
+
+function select(i) {
+  if (G.done) return;
+  G.sel = G.sel === i ? -1 : i;
+  renderGrid();
+}
+
+function inputNum(n) {
+  if (G.done || G.sel < 0) return;
+  const i = G.sel;
+  if (G.cells[i].given) return;
+
+  if (G.notesMode) {
+    if (G.cells[i].val > 0) return;
+    const ns = G.notes[i];
+    if (ns.has(n)) ns.delete(n); else ns.add(n);
+    renderGrid();
+    return;
+  }
+
+  G.notes[i] = new Set();
+  G.cells[i].val   = n;
+  G.cells[i].error = n !== G.solution[i];
+
+  if (G.cells[i].error) {
+    G.mistakes++;
+    renderStats();
+    const el = cellEls[i];
+    el.style.transition = 'none';
+    el.style.background = 'rgba(204,51,51,0.4)';
+    setTimeout(() => { el.style.transition=''; el.style.background=''; renderGrid(); }, 380);
+  } else {
+    for (let j = 0; j < 81; j++) {
+      if (rowOf(j)===rowOf(i) || colOf(j)===colOf(i) || boxOf(j)===boxOf(i))
+        G.notes[j].delete(n);
+    }
+    renderGrid();
+    renderPicker();
+    checkWin();
+  }
+}
+
+function erase() {
+  if (G.done || G.sel < 0) return;
+  const i = G.sel;
+  if (G.cells[i].given) return;
+  G.cells[i].val = 0; G.cells[i].error = false;
+  G.notes[i] = new Set();
+  renderGrid(); renderPicker();
+}
+
+function hint() {
+  if (G.done || G.sel < 0 || G.hints <= 0) return;
+  const i = G.sel;
+  if (G.cells[i].given) return;
+  if (G.cells[i].val === G.solution[i] && G.cells[i].val > 0) return;
+  const n = G.solution[i];
+  G.cells[i].val = n; G.cells[i].error = false;
+  G.notes[i] = new Set();
+  G.hints--;
+  for (let j = 0; j < 81; j++) {
+    if (rowOf(j)===rowOf(i) || colOf(j)===colOf(i) || boxOf(j)===boxOf(i))
+      G.notes[j].delete(n);
+  }
+  const el = cellEls[i];
+  el.style.background = 'rgba(232,25,138,0.35)';
+  setTimeout(() => { el.style.background=''; renderGrid(); }, 440);
+  renderStats(); renderPicker(); checkWin();
+}
+
+function toggleNotes() {
+  G.notesMode = !G.notesMode;
+  const btn = document.getElementById('btnNotes');
+  btn.classList.toggle('on', G.notesMode);
+  btn.textContent = G.notesMode ? '✎ Notes ●' : '✎ Notes';
+}
+
+function checkWin() {
+  for (let i = 0; i < 81; i++)
+    if (G.cells[i].val !== G.solution[i]) return;
+  G.done = true;
+  clearInterval(G.timerRef);
+  setTimeout(showVictory, 650);
+}
+
+// ═══════════════════════════════════════════
+//  VICTORY
+// ═══════════════════════════════════════════
+
+function showVictory() {
+  const m = (G.timer/60|0).toString().padStart(2,'0');
+  const s = (G.timer%60).toString().padStart(2,'0');
+  document.getElementById('v-time').textContent   = `${m}:${s}`;
+  document.getElementById('v-errors').textContent = G.mistakes;
+
+  // Spinning icons row
+  const row = document.getElementById('vIconRow');
+  row.innerHTML = '';
+  [0, 2, 5].forEach((idx, pos) => {
+    const w = document.createElement('div');
+    w.className = 'v-spin';
+    w.style.animationDelay = (pos * 0.3) + 's';
+    w.innerHTML = ICONS.svgs[idx];
+    row.appendChild(w);
+  });
+
+  // Floating icon confetti
+  const fl = document.getElementById('floaters');
+  fl.innerHTML = '';
+  for (let k = 0; k < 28; k++) {
+    const w = document.createElement('div');
+    const size = 20 + Math.random() * 30;
+    w.style.cssText = `
+      position: absolute;
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 95}%;
+      animation: float-up ${2.2 + Math.random() * 4}s ${Math.random() * 6}s ease-in infinite;
+    `;
+    w.innerHTML = ICONS.svgs[Math.floor(Math.random() * 9)];
+    fl.appendChild(w);
+  }
+
+  document.getElementById('victoryScreen').classList.add('show');
+}
+
+// ═══════════════════════════════════════════
+//  SETUP
+// ═══════════════════════════════════════════
+
+// Age gate
+(function() {
+  if (sessionStorage.getItem('dirty-doku-ok')) {
+    document.getElementById('ageGate').style.display = 'none';
+    return;
+  }
+  document.getElementById('gateEnter').addEventListener('click', () => {
+    sessionStorage.setItem('dirty-doku-ok', '1');
+    const gate = document.getElementById('ageGate');
+    gate.classList.add('hide');
+    setTimeout(() => { gate.style.display = 'none'; }, 540);
+  });
+})();
+
+buildGrid();
+
+// Build icon picker
+const pickerEl = document.getElementById('iconPicker');
+for (let n = 1; n <= 9; n++) {
+  const btn = document.createElement('button');
+  btn.className = 'icon-btn';
+  btn.dataset.n = n;
+  btn.title = ICONS.names[n-1];
+  btn.innerHTML = ICONS.svgs[n-1];
+  btn.addEventListener('click', () => inputNum(n));
+  pickerEl.appendChild(btn);
+}
+
+// Controls
+document.getElementById('btnErase').addEventListener('click', erase);
+document.getElementById('btnNotes').addEventListener('click', toggleNotes);
+document.getElementById('btnHint').addEventListener('click', hint);
+document.getElementById('btnNew').addEventListener('click', () => startGame(G.diff));
+document.getElementById('btnPlayAgain').addEventListener('click', () => startGame(G.diff));
+document.querySelectorAll('.diff-btn').forEach(b =>
+  b.addEventListener('click', () => startGame(b.dataset.d))
+);
+
+// Keyboard (1–9 map to the 9 icons)
+document.addEventListener('keydown', e => {
+  if (e.key >= '1' && e.key <= '9') { inputNum(+e.key); return; }
+  if (e.key==='Backspace'||e.key==='Delete'||e.key==='0') { erase(); return; }
+  if (e.key==='n'||e.key==='N') { toggleNotes(); return; }
+  if (e.key==='h'||e.key==='H') { hint(); return; }
+  const d = {ArrowUp:-9, ArrowDown:9, ArrowLeft:-1, ArrowRight:1};
+  if (d[e.key] !== undefined && G.sel >= 0) {
+    e.preventDefault();
+    if (e.key==='ArrowLeft'  && colOf(G.sel)===0) return;
+    if (e.key==='ArrowRight' && colOf(G.sel)===8) return;
+    const ni = G.sel + d[e.key];
+    if (ni >= 0 && ni < 81) select(ni);
+  }
+});
+
+startGame('easy');
+</script>
+</body>
+</html>
